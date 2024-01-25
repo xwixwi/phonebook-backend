@@ -31,7 +31,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan.token("post-body", (req, res) => req.method == "POST" ? JSON.stringify(req.body) : "")(":method :url :status :res[content-length] - :response-time ms :post-body"));
 app.use(cors());
-app.use(express.static("dist"));
+app.use(express.static("frontend-dist"));
 
 app.get("/info", (request, response) => {
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

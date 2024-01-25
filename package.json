@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "(if exist dist/ rmdir /q /s dist) && cd ../the-phonebook/ && npm run build && xcopy dist \"../phonebook-backend/dist\" /q /i /s /e"
+    "build": "(if exist frontend-dist/ rmdir /q /s frontend-dist) && cd ../the-phonebook/ && npm run build && xcopy dist \"../phonebook-backend/frontend-dist\" /q /i /s /e"
   },
   "author": "",
   "license": "ISC",
