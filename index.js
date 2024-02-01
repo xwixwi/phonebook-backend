@@ -4,10 +4,10 @@ const morgan = require("morgan");
 const cors = require("cors");
 const Person = require("./models/person.js");
 
-morgan.token()
+morgan.token();
 const app = express();
 app.use(express.json());
-app.use(morgan.token("post-body", (req, res) => req.method === "POST" ? JSON.stringify(req.body) : "")(":method :url :status :res[content-length] - :response-time ms :post-body"));
+app.use(morgan.token("post-body", (req) => req.method === "POST" ? JSON.stringify(req.body) : "")(":method :url :status :res[content-length] - :response-time ms :post-body"));
 app.use(cors());
 app.use(express.static("frontend-dist"));
 
@@ -21,7 +21,7 @@ app.get("/info", (request, response) => {
             <p>Phonebook has info for ${persons.length} people</p>
             <p>${weekdayNames[date.getDay()]} ${monthNames[date.getMonth()]} ${date.getDate()} ${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} UTC ${date.getTimezoneOffset()}</p>
         `);
-    })
+    });
 });
 
 app.get("/api/persons", (request, response) => {
@@ -66,8 +66,8 @@ app.put("/api/persons/:id", (request, response, next) => {
     }).catch(error => next(error));
 });
 
-app.delete("/api/persons/:id", (request, response) => {
-    Person.findByIdAndDelete(request.params.id).then(result => {
+app.delete("/api/persons/:id", (request, response, next) => {
+    Person.findByIdAndDelete(request.params.id).then(() => {
         response.status(204).end();
     }).catch(error => next(error));
 });
@@ -84,12 +84,12 @@ app.use((error, request, response, next) => {
     console.error(error.message);
 
     switch (error.name) {
-        case "CastError": return response.status(400).send({
-            error: "malformatted id"
-        });
-        case "ValidationError": return response.status(400).json({
-            error: error.message
-        });
+    case "CastError": return response.status(400).send({
+        error: "malformatted id"
+    });
+    case "ValidationError": return response.status(400).json({
+        error: error.message
+    });
     }
 
     next(error);
